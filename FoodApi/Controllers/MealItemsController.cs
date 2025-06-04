@@ -75,13 +75,23 @@ namespace FoodApi.Controllers
         // POST: api/MealItems
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<MealItems>> PostMealItems(MealItems mealItems)
+        public async Task<IActionResult> PostMealItems([FromBody] List<MealItems> mealItems)
         {
-            _context.MealItems.Add(mealItems);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.MealItems.AddRange(mealItems);
+                await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMealItems", new { id = mealItems.id }, mealItems);
+                return Ok(new { message = "Meal items added successfully." });
+            }
+            catch (Exception ex)
+            {
+                // Log error details to the console
+                Console.WriteLine("Error saving meal items: " + ex.Message);
+                return StatusCode(500, new { message = "An internal error occurred.", details = ex.Message });
+            }
         }
+
 
         // DELETE: api/MealItems/5
         [HttpDelete("{id}")]

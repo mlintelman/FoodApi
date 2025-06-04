@@ -7,6 +7,7 @@
         public int food_item_id { get; set; } // Foreign key to FoodItem
         public string? name { get; set; } // Name of the food item
         public double serving_size_grams { get; set; } // Serving size in grams
+        public double servings { get; set; } // Number of servings the user had
         public double calories { get; set; } // Calories for the serving size
         public double carbs { get; set; } // Carbohydrates for the serving size
         public double protein { get; set; } // Protein for the serving size
