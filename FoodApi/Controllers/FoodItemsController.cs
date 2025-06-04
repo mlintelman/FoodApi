@@ -20,6 +20,23 @@ namespace FoodApi.Controllers
             _context = context;
         }
 
+        // GET: api/FoodItems/search?query=chicken
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<FoodItem>>> Search(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return BadRequest("Query string cannot be empty.");
+            }
+
+            var results = await _context.FoodItems
+                .Where(f => f.name.Contains(query))
+                .ToListAsync();
+
+            return Ok(results);
+        }
+
+
         // GET: api/FoodItems
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FoodItem>>> GetFoodItems()

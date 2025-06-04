@@ -5,17 +5,27 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 // Add CORS policy
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("AllowReactApp",
+//        policy =>
+//        {
+//            policy.WithOrigins("http://localhost:5173")
+//                  .AllowAnyHeader()
+//                  .AllowAnyMethod();
+//        });
+//});
+// Add CORS policy
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowReactApp",
+    options.AddPolicy("AllowReactDevClient",
         policy =>
         {
-            policy.WithOrigins("http://localhost:3000")
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
+            policy.WithOrigins("http://localhost:5173")
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
         });
 });
-
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -32,6 +42,9 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+// Use CORS
+app.UseCors("AllowReactDevClient");
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -40,7 +53,7 @@ if (app.Environment.IsDevelopment())
 }
 
 // Add this line before `UseAuthorization`:
-app.UseCors("AllowReactApp");
+//app.UseCors("AllowReactApp");
 
 app.UseHttpsRedirection();
 

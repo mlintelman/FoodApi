@@ -1,0 +1,107 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using FoodApi.Models;
+
+namespace FoodApi.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class MealItemsController : ControllerBase
+    {
+        private readonly NutritionDbContext _context;
+
+        public MealItemsController(NutritionDbContext context)
+        {
+            _context = context;
+        }
+
+        // GET: api/MealItems
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<MealItems>>> GetMealItems()
+        {
+            return await _context.MealItems.ToListAsync();
+        }
+
+        // GET: api/MealItems/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<MealItems>> GetMealItems(int id)
+        {
+            var mealItems = await _context.MealItems.FindAsync(id);
+
+            if (mealItems == null)
+            {
+                return NotFound();
+            }
+
+            return mealItems;
+        }
+
+        // PUT: api/MealItems/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutMealItems(int id, MealItems mealItems)
+        {
+            if (id != mealItems.id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(mealItems).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!MealItemsExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // POST: api/MealItems
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<MealItems>> PostMealItems(MealItems mealItems)
+        {
+            _context.MealItems.Add(mealItems);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetMealItems", new { id = mealItems.id }, mealItems);
+        }
+
+        // DELETE: api/MealItems/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteMealItems(int id)
+        {
+            var mealItems = await _context.MealItems.FindAsync(id);
+            if (mealItems == null)
+            {
+                return NotFound();
+            }
+
+            _context.MealItems.Remove(mealItems);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool MealItemsExists(int id)
+        {
+            return _context.MealItems.Any(e => e.id == id);
+        }
+    }
+}
