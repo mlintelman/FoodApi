@@ -41,6 +41,18 @@ namespace FoodApi.Controllers
             return meals;
         }
 
+        // GET: api/Meals/{user_id}/items
+        [HttpGet("{user_id}/meals")]
+        public async Task<ActionResult<IEnumerable<Meals>>> GetMealsByUserId(int user_id)
+        {
+            var meals = await _context.Meals.Where(m => m.user_id == user_id).ToListAsync();
+            //if (meals == null || !meals.Any())
+            //{
+            //    return NotFound();
+            //}
+            return Ok(meals);
+        }
+
         // PUT: api/Meals/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
