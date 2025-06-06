@@ -41,11 +41,25 @@ namespace FoodApi.Controllers
             return meals;
         }
 
-        // GET: api/Meals/{user_id}/items
+        // GET: api/Meals/{user_id}/meals
         [HttpGet("{user_id}/meals")]
         public async Task<ActionResult<IEnumerable<Meals>>> GetMealsByUserId(int user_id)
         {
             var meals = await _context.Meals.Where(m => m.user_id == user_id).ToListAsync();
+            //if (meals == null || !meals.Any())
+            //{
+            //    return NotFound();
+            //}
+            return Ok(meals);
+        }
+
+        // GET: api/Meals/{user_id}/{date}/meals
+        [HttpGet("{user_id}/{date}/meals")]
+        public async Task<ActionResult<IEnumerable<Meals>>> GetMealsByUserIdAndDateTime(int user_id, DateTime date)
+        {
+            var meals = await _context.Meals
+                .Where(m => m.user_id == user_id && m.date_time.Date == date.Date)
+                .ToListAsync();
             //if (meals == null || !meals.Any())
             //{
             //    return NotFound();
