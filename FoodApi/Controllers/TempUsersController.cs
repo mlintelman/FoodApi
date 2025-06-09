@@ -46,7 +46,7 @@ namespace FoodApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTempUsers(int id, TempUsers tempUsers)
         {
-            if (id != tempUsers.id)
+            if (id != tempUsers.Id)
             {
                 return BadRequest();
             }
@@ -80,7 +80,7 @@ namespace FoodApi.Controllers
             _context.TempUsers.Add(tempUsers);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTempUsers", new { id = tempUsers.id }, tempUsers);
+            return CreatedAtAction("GetTempUsers", new { id = tempUsers.Id }, tempUsers);
         }
 
         // DELETE: api/TempUsers/5
@@ -101,7 +101,7 @@ namespace FoodApi.Controllers
 
         private bool TempUsersExists(int id)
         {
-            return _context.TempUsers.Any(e => e.id == id);
+            return _context.TempUsers.Any(e => e.Id == id);
         }
     }
 }

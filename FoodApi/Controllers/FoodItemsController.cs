@@ -30,7 +30,7 @@ namespace FoodApi.Controllers
             }
 
             var results = await _context.FoodItems
-                .Where(f => f.name.Contains(query))
+                .Where(f => f.Name.Contains(query))
                 .ToListAsync();
 
             return Ok(results);
@@ -63,7 +63,7 @@ namespace FoodApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutFoodItem(long id, FoodItem foodItem)
         {
-            if (id != foodItem.id)
+            if (id != foodItem.Id)
             {
                 return BadRequest();
             }
@@ -97,7 +97,7 @@ namespace FoodApi.Controllers
             _context.FoodItems.Add(foodItem);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetFoodItem), new { id = foodItem.id }, foodItem);
+            return CreatedAtAction(nameof(GetFoodItem), new { id = foodItem.Id }, foodItem);
         }
 
         // DELETE: api/FoodItems/5
@@ -118,7 +118,7 @@ namespace FoodApi.Controllers
 
         private bool FoodItemExists(long id)
         {
-            return _context.FoodItems.Any(e => e.id == id);
+            return _context.FoodItems.Any(e => e.Id == id);
         }
     }
 }

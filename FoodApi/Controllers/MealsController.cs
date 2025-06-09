@@ -41,11 +41,11 @@ namespace FoodApi.Controllers
             return meals;
         }
 
-        // GET: api/Meals/{user_id}/meals
-        [HttpGet("{user_id}/meals")]
+        // GET: api/Meals/{user_id}
+        [HttpGet("{user_id}")]
         public async Task<ActionResult<IEnumerable<Meals>>> GetMealsByUserId(int user_id)
         {
-            var meals = await _context.Meals.Where(m => m.user_id == user_id).ToListAsync();
+            var meals = await _context.Meals.Where(m => m.UserId == user_id).ToListAsync();
             //if (meals == null || !meals.Any())
             //{
             //    return NotFound();
@@ -53,12 +53,12 @@ namespace FoodApi.Controllers
             return Ok(meals);
         }
 
-        // GET: api/Meals/{user_id}/{date}/meals
-        [HttpGet("{user_id}/{date}/meals")]
+        // GET: api/Meals/{user_id}/{date}
+        [HttpGet("{user_id}/{date}")]
         public async Task<ActionResult<IEnumerable<Meals>>> GetMealsByUserIdAndDateTime(int user_id, DateTime date)
         {
             var meals = await _context.Meals
-                .Where(m => m.user_id == user_id && m.date_time.Date == date.Date)
+                .Where(m => m.UserId == user_id && m.DateTime.Date == date.Date)
                 .ToListAsync();
             //if (meals == null || !meals.Any())
             //{
@@ -106,7 +106,7 @@ namespace FoodApi.Controllers
             _context.Meals.Add(meals);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMeals", new { id = meals.id }, meals);
+            return CreatedAtAction("GetMeals", new { id = meals.Id }, meals);
         }
 
         // DELETE: api/Meals/5
@@ -127,7 +127,7 @@ namespace FoodApi.Controllers
 
         private bool MealsExists(int id)
         {
-            return _context.Meals.Any(e => e.id == id);
+            return _context.Meals.Any(e => e.Id == id);
         }
     }
 }

@@ -46,7 +46,7 @@ namespace FoodApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMealItems(int id, MealItems mealItems)
         {
-            if (id != mealItems.id)
+            if (id != mealItems.Id)
             {
                 return BadRequest();
             }
@@ -111,7 +111,7 @@ namespace FoodApi.Controllers
 
         private bool MealItemsExists(int id)
         {
-            return _context.MealItems.Any(e => e.id == id);
+            return _context.MealItems.Any(e => e.Id == id);
         }
     }
 }
