@@ -22,7 +22,7 @@ namespace FoodApi.Controllers
 
         // GET: api/FoodItems/search?query=chicken
         [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<FoodItem>>> Search(string query)
+        public async Task<ActionResult<IEnumerable<FoodItems>>> Search(string query)
         {
             if (string.IsNullOrWhiteSpace(query))
             {
@@ -39,14 +39,14 @@ namespace FoodApi.Controllers
 
         // GET: api/FoodItems
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<FoodItem>>> GetFoodItems()
+        public async Task<ActionResult<IEnumerable<FoodItems>>> GetFoodItems()
         {
             return await _context.FoodItems.ToListAsync();
         }
 
         // GET: api/FoodItems/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<FoodItem>> GetFoodItem(long id)
+        public async Task<ActionResult<FoodItems>> GetFoodItem(long id)
         {
             var foodItem = await _context.FoodItems.FindAsync(id);
 
@@ -61,7 +61,7 @@ namespace FoodApi.Controllers
         // PUT: api/FoodItems/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFoodItem(long id, FoodItem foodItem)
+        public async Task<IActionResult> PutFoodItem(long id, FoodItems foodItem)
         {
             if (id != foodItem.Id)
             {
@@ -92,7 +92,7 @@ namespace FoodApi.Controllers
         // POST: api/FoodItems
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<FoodItem>> PostFoodItem(FoodItem foodItem)
+        public async Task<ActionResult<FoodItems>> PostFoodItem(FoodItems foodItem)
         {
             _context.FoodItems.Add(foodItem);
             await _context.SaveChangesAsync();
