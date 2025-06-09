@@ -22,7 +22,7 @@ namespace FoodApi.Controllers
 
         // GET: api/Meals
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Meals>>> GetMeals()
+        public async Task<ActionResult<IEnumerable<Meals>>> GetMeal()
         {
             return await _context.Meals.ToListAsync();
         }
@@ -41,11 +41,11 @@ namespace FoodApi.Controllers
             return meals;
         }
 
-        // GET: api/Meals/{user_id}
-        [HttpGet("{user_id}")]
-        public async Task<ActionResult<IEnumerable<Meals>>> GetMealsByUserId(int user_id)
+        // GET: api/Meals/user/{userId}
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<IEnumerable<Meals>>> GetMealsByUserId(int userId)
         {
-            var meals = await _context.Meals.Where(m => m.UserId == user_id).ToListAsync();
+            var meals = await _context.Meals.Where(m => m.UserId == userId).ToListAsync();
             //if (meals == null || !meals.Any())
             //{
             //    return NotFound();
@@ -53,12 +53,12 @@ namespace FoodApi.Controllers
             return Ok(meals);
         }
 
-        // GET: api/Meals/{user_id}/{date}
-        [HttpGet("{user_id}/{date}")]
-        public async Task<ActionResult<IEnumerable<Meals>>> GetMealsByUserIdAndDateTime(int user_id, DateTime date)
+        // GET: api/Meals/user/{userId}/{date}
+        [HttpGet("user/{userId}/{date}")]
+        public async Task<ActionResult<IEnumerable<Meals>>> GetMealsByUserIdAndDateTime(int userId, DateTime date)
         {
             var meals = await _context.Meals
-                .Where(m => m.UserId == user_id && m.DateTime.Date == date.Date)
+                .Where(m => m.UserId == userId && m.DateTime.Date == date.Date)
                 .ToListAsync();
             //if (meals == null || !meals.Any())
             //{
@@ -72,7 +72,7 @@ namespace FoodApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMeals(int id, Meals meals)
         {
-            if (id != meals.id)
+            if (id != meals.Id)
             {
                 return BadRequest();
             }
