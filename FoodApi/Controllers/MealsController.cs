@@ -67,6 +67,25 @@ namespace FoodApi.Controllers
             return Ok(meals);
         }
 
+        //// GET: api/Meals/nutritiontotals
+        //[HttpGet("nutritiontotals")]
+        //public async Task<ActionResult<IEnumerable<Meals>>> GetMealsWithNutritionTotals()
+        //{
+        //    var meals = await _context.Meals
+        //        .Include(m => m.MealItems) // Assuming MealItems is a navigation property in Meals
+        //        .ToListAsync();
+        //    if (meals == null || !meals.Any())
+        //    {
+        //        return NotFound();
+        //    }
+        //    // Calculate nutrition totals for each meal
+        //    foreach (var meal in meals)
+        //    {
+        //        meal.NutritionTotals = meal.MealItems.Select(mi => mi.Nutrition).Aggregate((total, next) => total + next);
+        //    }
+        //    return Ok(meals);
+        //}
+
         // PUT: api/Meals/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -113,13 +132,18 @@ namespace FoodApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMeals(int id)
         {
-            var meals = await _context.Meals.FindAsync(id);
-            if (meals == null)
-            {
-                return NotFound();
-            }
+            // First, delete the meal items associated with the meal
+            var mealItems = _context.MealItems.Where(mi => mi.MealId == id);
+            _context.MealItems.RemoveRange(mealItems);
 
-            _context.Meals.Remove(meals);
+            // Delete the meal itself
+            var meal = await _context.Meals.FindAsync(id);
+
+            if (meal == null)
+                return NotFound();
+
+            _context.Meals.Remove(meal);
+
             await _context.SaveChangesAsync();
 
             return NoContent();
